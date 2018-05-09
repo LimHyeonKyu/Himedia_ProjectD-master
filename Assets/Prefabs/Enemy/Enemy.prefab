@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySP: 0.3
+  enemyHp: 80
   lvManager: {fileID: 0}
   hpMG: {fileID: 0}
   effect: {fileID: 1601549121976710, guid: 1e9ccb3185a95cf488d6a1f9a3dc8f3e, type: 2}
@@ -177,7 +178,7 @@ MonoBehaviour:
   damage: 10
   exp: 50
   attackTime: 0
-  attackResPawnTime: 0.6
+  attackResPawnTime: 0.7
   unitIn: 1
   enemystate: 0
 --- !u!212 &212063715046870810

@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour {
 
 
     public float enemySP;
+    public float enemyHp;
     public GameObject lvManager;
     public GameObject hpMG;
     public GameObject effect;
@@ -43,23 +44,37 @@ public class EnemyController : MonoBehaviour {
                 if (attackTime >= attackResPawnTime)
                 {
                     Instantiate(effect, transform.position, transform.rotation);
+                    unit.GetComponent<UnitController>().unitHp -= damage;
                     attackTime = 0;
                 }
                 break;
             case ENEMYSTATE.DEAD:
+                enemySP=0;
                 gameObject.GetComponentInChildren<Animator>().SetBool("Die", true);
                 Destroy(gameObject,0.65f);
                 break;
             default:
                 break;
         }
+        if(unitIn==false)
+        {
+            enemystate = ENEMYSTATE.ATTACK;
+            if (unit.GetComponent<UnitController>().unitHp == 0)
+            {
+                unitIn = true;
+            }
+        }
         if(transform.position.x<=-2.2f)
         {
             enemystate = ENEMYSTATE.DEAD;
         }
-        if(unitIn==null)
+        if (unitIn == true)
         {
-            unitIn = true;
+            enemystate = ENEMYSTATE.NONE;
+        }
+        if (enemyHp <= 0)
+        {
+            enemystate = ENEMYSTATE.DEAD;
         }
     }
     void OnTriggerEnter(Collider col)
@@ -69,7 +84,7 @@ public class EnemyController : MonoBehaviour {
             hpMG.GetComponent<HPManager>().playerGauge.transform.localScale -= new Vector3(damage / hpMG.GetComponent<HPManager>().playerHP * 360, 0, 0);
             lvManager.GetComponent<LevelManager>().expVaule += exp;
             lvManager.GetComponent<LevelManager>().levelBar.transform.localScale += new Vector3(0, exp / lvManager.GetComponent<LevelManager>().expLimit * 360, 0);
-            enemystate = ENEMYSTATE.DEAD;
+            //enemystate = ENEMYSTATE.DEAD;
             //enemystate = ENEMYSTATE.ATTACK;
         }
         if(unitIn==true)
@@ -77,7 +92,7 @@ public class EnemyController : MonoBehaviour {
             if (col.gameObject.tag == "Unit1")
             {
                 unit = col.gameObject;
-                enemystate = ENEMYSTATE.ATTACK;
+                unitIn = false;
             }
         }
     }
